@@ -1,0 +1,202 @@
+# Sources:
+# - matrix theme by storax https://github.com/storax/plymouth-matrix-theme
+# - dna theme by adi1090x https://github.com/adi1090x/plymouth-themes
+
+# Matrix ----------------------------------------------------------------------
+
+text_red = 0.3568627450980392;
+text_green = 0.5137254901960784;
+text_blue = 0.4117647058823529;
+
+font = "PxPlus IBM BIOS-2y 12";
+matrix.x = 50;
+matrix.y = 30;
+matrix.anim_start = 50.0;
+matrix.end = 74;
+matrix.step = 3;
+matrix.image = Image.Text("", text_red, text_green, text_blue, 1, font);
+matrix.sprite = Sprite();
+matrix.sprite.SetImage(matrix.image);
+matrix.sprite.SetPosition(matrix.x, matrix.y, 10000);
+matrix.text = [];
+matrix.text[0] = "";
+matrix.text[1] = "W";
+matrix.text[2] = "Wa";
+matrix.text[3] = "Wak";
+matrix.text[4] = "Wake";
+matrix.text[5] = "Wake u";
+matrix.text[6] = "Wake up";
+matrix.text[7] = "Wake up,";
+matrix.text[8] = "Wake up, N";
+matrix.text[9] = "Wake up, Ne";
+matrix.text[10] = "Wake up, Neo";
+matrix.text[11] = "Wake up, Neo.";
+matrix.text[12] = "Wake up, Neo..";
+matrix.text[13] = "Wake up, Neo...";
+matrix.text[14] = "Wake up, Neo...";
+matrix.text[15] = "Wake up, Neo...";
+matrix.text[16] = "Wake up, Neo...";
+matrix.text[17] = "Wake up, Neo...";
+matrix.text[18] = "Wake up, Neo...";
+matrix.text[19] = "Wake up, Neo...";
+matrix.text[20] = "Wake up, Neo...";
+matrix.text[21] = "Wake up, Neo...";
+matrix.text[22] = "Wake up, Neo...";
+matrix.text[23] = "T";
+matrix.text[24] = "Th";
+matrix.text[25] = "The";
+matrix.text[26] = "The M";
+matrix.text[27] = "The Ma";
+matrix.text[28] = "The Mat";
+matrix.text[29] = "The Matr";
+matrix.text[30] = "The Matri";
+matrix.text[31] = "The Matrix";
+matrix.text[32] = "The Matrix h";
+matrix.text[33] = "The Matrix ha";
+matrix.text[34] = "The Matrix has";
+matrix.text[35] = "The Matrix has y";
+matrix.text[36] = "The Matrix has yo";
+matrix.text[37] = "The Matrix has you";
+matrix.text[38] = "The Matrix has you.";
+matrix.text[39] = "The Matrix has you..";
+matrix.text[40] = "The Matrix has you...";
+matrix.text[41] = "The Matrix has you...";
+matrix.text[42] = "The Matrix has you...";
+matrix.text[43] = "The Matrix has you...";
+matrix.text[44] = "F";
+matrix.text[45] = "Fo";
+matrix.text[46] = "Fol";
+matrix.text[47] = "Foll";
+matrix.text[48] = "Follo";
+matrix.text[49] = "Follow";
+matrix.text[50] = "Follow t";
+matrix.text[51] = "Follow th";
+matrix.text[52] = "Follow the";
+matrix.text[53] = "Follow the w";
+matrix.text[54] = "Follow the wh";
+matrix.text[55] = "Follow the whi";
+matrix.text[56] = "Follow the whit";
+matrix.text[57] = "Follow the white";
+matrix.text[58] = "Follow the white r";
+matrix.text[59] = "Follow the white ra";
+matrix.text[60] = "Follow the white rab";
+matrix.text[61] = "Follow the white rabb";
+matrix.text[62] = "Follow the white rabbi";
+matrix.text[63] = "Follow the white rabbit";
+matrix.text[64] = "Follow the white rabbit.";
+matrix.text[65] = "Follow the white rabbit.";
+matrix.text[66] = "Follow the white rabbit.";
+matrix.text[67] = "Follow the white rabbit.";
+matrix.text[68] = "Follow the white rabbit.";
+matrix.text[69] = "Follow the white rabbit.";
+matrix.text[70] = "Follow the white rabbit.";
+matrix.text[71] = "Follow the white rabbit.";
+matrix.text[72] = "Follow the white rabbit.";
+matrix.text[73] = "Follow the white rabbit.";
+matrix.text[74] = "Knock, knock, Neo.";
+
+time = 0.0;
+matrix.lastindex = 0;
+
+fun refresh_callback()
+{
+	time++;
+	index = Math.Clamp(time - matrix.anim_start, 0, 99999);
+	index = Math.Int(Math.Clamp(index / matrix.step, 0, matrix.end));
+	if (index > matrix.lastindex)
+	{
+		if (Plymouth.GetMode() == "boot")
+		{
+			text = matrix.text[index];
+			matrix.image = Image.Text(text, text_red, text_green, text_blue, 1, font);
+			matrix.sprite.SetImage(matrix.image);
+		}
+	}
+}
+Plymouth.SetRefreshFunction(refresh_callback);
+
+# DNA -------------------------------------------------------------------------
+
+# Screen size
+screen.w = Window.GetWidth(0);
+screen.h = Window.GetHeight(0);
+screen.half.w = Window.GetWidth(0) / 2;
+screen.half.h = Window.GetHeight(0) / 2;
+
+# Question prompt
+question = null;
+answer = null;
+
+# Message
+message = null;
+
+# Password prompt
+bullets = null;
+prompt = null;
+bullet.image = Image.Text("*", text_red, text_green, text_blue, 1, font);
+
+# Flow
+state.status = "play";
+state.time = 0.0;
+
+# Password Prompt -------------------------------------------------------------
+
+fun DisplayQuestionCallback(prompt, entry) {
+	question = null;
+	answer = null;
+
+	if (entry == "")
+		entry = "<answer>";
+
+	question.image = Image.Text(prompt, 1, 1, 1);
+	question.sprite = Sprite(question.image);
+	question.sprite.SetX(screen.half.w - question.image.GetWidth() / 2);
+	question.sprite.SetY(screen.h - 4 * question.image.GetHeight());
+
+	answer.image = Image.Text(entry, 1, 1, 1);
+	answer.sprite = Sprite(answer.image);
+	answer.sprite.SetX(screen.half.w - answer.image.GetWidth() / 2);
+	answer.sprite.SetY(screen.h - 2 * answer.image.GetHeight());
+}
+Plymouth.SetDisplayQuestionFunction(DisplayQuestionCallback);
+
+fun DisplayPasswordCallback(nil, bulletCount) {
+	state.status = "pause";
+	totalWidth = bulletCount * bullet.image.GetWidth();
+	startPos = screen.half.w - totalWidth / 2;
+
+	prompt.image = Image.Text("Enter Password", text_red, text_green, text_blue, 1, font);
+	prompt.sprite = Sprite(prompt.image);
+	prompt.sprite.SetX(screen.half.w - prompt.image.GetWidth() / 2);
+	prompt.sprite.SetY(screen.h - 4 * prompt.image.GetHeight());
+
+	# Clear all bullets (user might hit backspace)
+	bullets = null;
+	for (i = 0; i < bulletCount; i++) {
+		bullets[i].sprite = Sprite(bullet.image);
+		bullets[i].sprite.SetX(startPos + i * bullet.image.GetWidth());
+		bullets[i].sprite.SetY(screen.h - 2 * bullet.image.GetHeight());
+	}
+}
+Plymouth.SetDisplayPasswordFunction(DisplayPasswordCallback);
+
+# Normal display (unset all text) ---------------------------------------------
+
+fun DisplayNormalCallback() {
+	state.status = "play";
+	bullets = null;
+	prompt = null;
+	message = null;
+	question = null;
+	answer = null;
+}
+Plymouth.SetDisplayNormalFunction(DisplayNormalCallback);
+
+# Message ---------------------------------------------------------------------
+
+fun MessageCallback(text) {
+	message.image = Image.Text(text, 1, 1, 1);
+	message.sprite = Sprite(message.image);
+	message.sprite.SetPosition(screen.half.w - message.image.GetWidth() / 2, message.image.GetHeight());
+}
+Plymouth.SetMessageFunction(MessageCallback);
