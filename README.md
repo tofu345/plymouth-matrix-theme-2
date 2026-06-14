@@ -1,22 +1,16 @@
 # Plymouth Matrix Theme 2
 
-[Plymouth Matrix Theme](https://github.com/storax/plymouth-matrix-theme) by
-storax with a better looking passward prompt from
-[adi1090x's Plymouth Theme Collection](https://github.com/adi1090x/plymouth-themes)
+[Plymouth Matrix Theme](https://github.com/storax/plymouth-matrix-theme) with a
+better looking passward prompt from [adi1090x's Plymouth Theme
+Collection](https://github.com/adi1090x/plymouth-themes)
 
-# Ad-hoc Installation on NixOS
+# Installation
 
-Clone this repository, replace `path/to/matrix2.nix` and add to your
-`configuration.nix`.
+Download the source from https://github.com/storax/plymouth-matrix-theme and go
+to the directory and execute::
 
-```nix
-boot.plymouth = {
-  enable = true;
-  theme = "matrix2";
-  themePackages = with pkgs; [
-    (pkgs.callPackage /path/to/matrix2.nix { })
-  ];
-};
-```
+`make install`
 
-I may add this to nixpkgs but I am not sure yet.
+This will install the files to
+`$(DESTDIR)$(PREFIX)/share/plymouth/themes/matrix2` which defaults to
+`/usr/share/plymouth/themes/matrix2`.
