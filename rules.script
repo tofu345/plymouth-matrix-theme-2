@@ -1,0 +1,192 @@
+text_red = 0.3568627450980392;
+text_green = 0.5137254901960784;
+text_blue = 0.4117647058823529;
+font = "PxPlus IBM BIOS-2y 12";
+
+# [https://sqlite.org/codeofethics.html]
+rules = [];
+rules[0]  = "First of all, love the Lord God with your whole heart, your whole soul, and your whole strength.";
+rules[1]  = "Then, love your neighbor as yourself.";
+rules[2]  = "Do not murder.";
+rules[3]  = "Do not commit adultery.";
+rules[4]  = "Do not steal.";
+rules[5]  = "Do not covet.";
+rules[6]  = "Do not bear false witness.";
+rules[7]  = "Honor all people.";
+rules[8]  = "Do not do to another what you would not have done to yourself.";
+rules[9]  = "Deny oneself in order to follow Christ.";
+rules[10] = "Chastise the body.";
+rules[11] = "Do not become attached to pleasures.";
+rules[12] = "Love fasting.";
+rules[13] = "Relieve the poor.";
+rules[14] = "Clothe the naked.";
+rules[15] = "Visit the sick.";
+rules[16] = "Bury the dead.";
+rules[17] = "Be a help in times of trouble.";
+rules[18] = "Console the sorrowing.";
+rules[19] = "Be a stranger to the world's ways.";
+rules[20] = "Prefer nothing more than the love of Christ.";
+rules[21] = "Do not give way to anger.";
+rules[22] = "Do not nurse a grudge.";
+rules[23] = "Do not entertain deceit in your heart.";
+rules[24] = "Do not give a false peace.";
+rules[25] = "Do not forsake charity.";
+rules[26] = "Do not swear, for fear of perjuring yourself.";
+rules[27] = "Utter only truth from heart and mouth.";
+rules[28] = "Do not return evil for evil.";
+rules[29] = "Do no wrong to anyone, and bear patiently wrongs done to yourself.";
+rules[30] = "Love your enemies.";
+rules[31] = "Do not curse those who curse you, but rather bless them.";
+rules[32] = "Bear persecution for justice's sake.";
+rules[33] = "Be not proud.";
+rules[34] = "Be not addicted to wine.";
+rules[35] = "Be not a great eater.";
+rules[36] = "Be not drowsy.";
+rules[37] = "Be not lazy.";
+rules[38] = "Be not a grumbler.";
+rules[39] = "Be not a detractor.";
+rules[40] = "Put your hope in God.";
+rules[41] = "Attribute to God, and not to self, whatever good you see in yourself.";
+rules[42] = "Recognize always that evil is your own doing, and to impute it to yourself.";
+rules[43] = "Fear the Day of Judgment.";
+rules[44] = "Be in dread of hell.";
+rules[45] = "Desire eternal life with all the passion of the spirit.";
+rules[46] = "Keep death daily before your eyes.";
+rules[47] = "Keep constant guard over the actions of your life.";
+rules[48] = "Know for certain that God sees you everywhere.";
+rules[49] = "When wrongful thoughts come into your heart, dash them against Christ immediately.";
+rules[50] = "Disclose wrongful thoughts to your spiritual mentor.";
+rules[51] = "Guard your tongue against evil and depraved speech.";
+rules[52] = "Do not love much talking.";
+rules[53] = "Speak no useless words or words that move to laughter.";
+rules[54] = "Do not love much or boisterous laughter.";
+rules[55] = "Listen willingly to holy reading.";
+rules[56] = "Devote yourself frequently to prayer.";
+rules[57] = "Daily in your prayers, with tears and sighs, confess your past sins to God, and amend them for the future.";
+rules[58] = "Fulfill not the desires of the flesh; hate your own will.";
+rules[59] = "Obey in all things the commands of those whom God has placed in authority over you even though they (which God forbid) should act otherwise, mindful of the Lord's precept, 'Do what they say, but not what they do.'";
+rules[60] = "Do not wish to be called holy before one is holy; but first to be holy, that you may be truly so called.";
+rules[61] = "Fulfill God's commandments daily in your deeds.";
+rules[62] = "Love chastity.";
+rules[63] = "Hate no one.";
+rules[64] = "Be not jealous, nor harbor envy.";
+rules[65] = "Do not love quarreling.";
+rules[66] = "Shun arrogance.";
+rules[67] = "Respect your seniors.";
+rules[68] = "Love your juniors.";
+rules[69] = "Pray for your enemies in the love of Christ.";
+rules[70] = "Make peace with your adversary before the sun sets.";
+rules[71] = "Never despair of God's mercy.";
+num_rules = 71;
+
+rule.index = Math.Int(Math.Random() * num_rules);
+rule.text = rules[rule.index];
+
+time = 0.0;
+anim_start = 50.0;
+step = 3;
+x = 50;
+y = 30;
+image = null;
+sprite = Sprite();
+sprite.SetPosition(x, y, 10000);
+
+fun refresh_callback()
+{
+	time++;
+    # wait `anim_start` steps
+	index = Math.Clamp(time - anim_start, 0, 99999);
+    # clamp `index` to length of current rule and
+    # increment index after every `step` iterations
+	index = Math.Int(Math.Clamp(index / step, 0, rules.text.Length()));
+    # display rule.text[0..`index`]
+    str = rule.text.SubString(0, index);
+
+	if (index > 0)
+	{
+		if (Plymouth.GetMode() == "boot")
+		{
+			image = Image.Text(str, text_red, text_green, text_blue, 1, font);
+			sprite.SetImage(image);
+		}
+	}
+}
+Plymouth.SetRefreshFunction(refresh_callback);
+
+# Screen size
+screen.w = Window.GetWidth(0);
+screen.h = Window.GetHeight(0);
+screen.half.w = Window.GetWidth(0) / 2;
+screen.half.h = Window.GetHeight(0) / 2;
+
+# Question prompt
+question = null;
+answer = null;
+
+# Message
+message = null;
+
+# Password prompt
+bullets = null;
+prompt = null;
+bullet.image = Image.Text("*", text_red, text_green, text_blue, 1, font);
+
+# Password Prompt -------------------------------------------------------------
+
+fun DisplayQuestionCallback(prompt, entry) {
+	question = null;
+	answer = null;
+
+	if (entry == "")
+		entry = "<answer>";
+
+	question.image = Image.Text(prompt, text_red, text_green, text_blue, 1, font);
+	question.sprite = Sprite(question.image);
+	question.sprite.SetX(screen.half.w - question.image.GetWidth() / 2);
+	question.sprite.SetY(screen.h - 4 * question.image.GetHeight());
+
+	answer.image = Image.Text(entry, text_red, text_green, text_blue, 1, font);
+	answer.sprite = Sprite(answer.image);
+	answer.sprite.SetX(screen.half.w - answer.image.GetWidth() / 2);
+	answer.sprite.SetY(screen.h - 2 * answer.image.GetHeight());
+}
+Plymouth.SetDisplayQuestionFunction(DisplayQuestionCallback);
+
+fun DisplayPasswordCallback(nil, bulletCount) {
+	totalWidth = bulletCount * bullet.image.GetWidth();
+	startPos = screen.half.w - totalWidth / 2;
+
+	prompt.image = Image.Text("Enter Password", text_red, text_green, text_blue, 1, font);
+	prompt.sprite = Sprite(prompt.image);
+	prompt.sprite.SetX(screen.half.w - prompt.image.GetWidth() / 2);
+	prompt.sprite.SetY(screen.h - 4 * prompt.image.GetHeight());
+
+	# Clear all bullets (user might hit backspace)
+	bullets = null;
+	for (i = 0; i < bulletCount; i++) {
+		bullets[i].sprite = Sprite(bullet.image);
+		bullets[i].sprite.SetX(startPos + i * bullet.image.GetWidth());
+		bullets[i].sprite.SetY(screen.h - 2 * bullet.image.GetHeight());
+	}
+}
+Plymouth.SetDisplayPasswordFunction(DisplayPasswordCallback);
+
+# Normal display (unset all text) ---------------------------------------------
+
+fun DisplayNormalCallback() {
+	bullets = null;
+	prompt = null;
+	message = null;
+	question = null;
+	answer = null;
+}
+Plymouth.SetDisplayNormalFunction(DisplayNormalCallback);
+
+# Message ---------------------------------------------------------------------
+
+fun MessageCallback(text) {
+	message.image = Image.Text(text, text_red, text_green, text_blue, 1, font);
+	message.sprite = Sprite(message.image);
+	message.sprite.SetPosition(screen.half.w - message.image.GetWidth() / 2, message.image.GetHeight());
+}
+Plymouth.SetMessageFunction(MessageCallback);

@@ -1,16 +1,24 @@
-# Plymouth Matrix Theme 2
+# Plymouth Theme
 
-[Plymouth Matrix Theme](https://github.com/storax/plymouth-matrix-theme) with a
-better looking passward prompt from [adi1090x's Plymouth Theme
+Based on [Plymouth Matrix
+Theme](https://github.com/storax/plymouth-matrix-theme) with a better passward
+prompt from [adi1090x's Plymouth Theme
 Collection](https://github.com/adi1090x/plymouth-themes)
 
 # Installation
 
-Download the source from https://github.com/storax/plymouth-matrix-theme and go
-to the directory and execute::
+Download the source from and go to the directory and execute:
 
-`make install`
+```bash
+make install
+```
 
 This will install the files to
-`$(DESTDIR)$(PREFIX)/share/plymouth/themes/matrix2` which defaults to
-`/usr/share/plymouth/themes/matrix2`.
+`$(DESTDIR)$(PREFIX)/share/plymouth/themes/rules` which defaults to
+`/usr/share/plymouth/themes/rules`.
+
+Set as default theme with:
+
+```bash
+plymouth-set-default-theme rules
+```

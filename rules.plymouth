@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Rules
+Description=Display a pseudo-random rule of St. Benedict
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/rules
+ScriptFile=/usr/share/plymouth/themes/rules/rules.script

@@ -1,10 +1,10 @@
-PREFIX?=/usr/
+PREFIX?=/usr
 target=$(DESTDIR)$(PREFIX)
-THEMEDIR=$(target)/share/plymouth/themes/matrix2/
+THEMEDIR=$(target)/share/plymouth/themes/rules/
 
 all:
 
 install:
 	mkdir -p $(THEMEDIR)
-	install -m 644 matrix2.plymouth $(THEMEDIR)
-	install -m 644 matrix2.script $(THEMEDIR)
+	install -m 644 rules.plymouth $(THEMEDIR)
+	install -m 644 rules.script $(THEMEDIR)
